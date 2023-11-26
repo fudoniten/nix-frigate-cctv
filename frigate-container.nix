@@ -15,7 +15,7 @@ let
   frigateCfg = toJSON {
     mqtt = {
       enabled = true;
-      inherit (cfg.mqtt) host port;
+      inherit (cfg.mqtt) host port user;
       password = "{FRIGATE_MQTT_PASSWORD}";
     };
     logger.default = cfg.log-level;
@@ -163,14 +163,14 @@ in {
         description = "Port on which to contact the MQTT server.";
       };
 
-      username = mkOption {
+      user = mkOption {
         type = str;
         description = "User as which to connect to server.";
       };
 
       password-file = mkOption {
         type = str;
-        description =
+        descriptionq =
           "File containing password with which to authenticate to MQTT server.";
       };
     };
