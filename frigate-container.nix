@@ -170,7 +170,7 @@ in {
 
       password-file = mkOption {
         type = str;
-        descirption =
+        description =
           "File containing password with which to authenticate to MQTT server.";
       };
     };
