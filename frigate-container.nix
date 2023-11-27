@@ -22,7 +22,7 @@ let
         password = "{FRIGATE_MQTT_PASSWORD}";
       };
       logger.default = cfg.log-level;
-      # ffmpeg.hwaccel_args = [ "preset-intel-vaapi" ];
+      ffmpeg.hwaccel_args = optional (cfg.hwaccel != null) cfg.hwaccel;
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
           ffmpeg.inputs = [
@@ -72,6 +72,12 @@ in {
         type = str;
         description = "Frigate Docker image to run.";
       };
+    };
+
+    hwaccel = mkOption {
+      type = nullOr str;
+      description = "Hardware acceleration driver.";
+      default = null;
     };
 
     retention = {
