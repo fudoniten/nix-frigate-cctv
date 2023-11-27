@@ -127,7 +127,7 @@ in {
     };
 
     detectors = mkOption {
-      type = attrsOf (attrsOf any);
+      type = attrsOf (attrsOf str);
       default = { };
     };
 
