@@ -187,7 +187,7 @@ in {
       frigateEnv = {
         source-file = let
           camPasswd = readFile cfg.camera-password-file;
-          mqttPasswd = readFile cfg.mqtt.passwd-file;
+          mqttPasswd = readFile cfg.mqtt.password-file;
         in makeEnvFile {
           FRIGATE_RTSP_PASSWORD = camPasswd;
           FRIGATE_MQTT_PASSWORD = mqttPasswd;
