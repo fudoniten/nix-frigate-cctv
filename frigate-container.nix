@@ -22,7 +22,7 @@ let
         password = "{FRIGATE_MQTT_PASSWORD}";
       };
       logger.default = cfg.log-level;
-      ffmpeg.hwaccel_args = [ "preset-intel-vaapi" ];
+      # ffmpeg.hwaccel_args = [ "preset-intel-vaapi" ];
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
           ffmpeg.inputs = [
