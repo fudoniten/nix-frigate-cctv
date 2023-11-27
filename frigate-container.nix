@@ -188,7 +188,7 @@ in {
         source-file = let
           camPasswd = readFile cfg.camera-password-file;
           mqttPasswd = readFile cfg.mqtt.passwd-file;
-        in mkEnvFile {
+        in makeEnvFile {
           FRIGATE_RTSP_PASSWORD = camPasswd;
           FRIGATE_MQTT_PASSWORD = mqttPasswd;
         };
