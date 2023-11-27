@@ -12,41 +12,43 @@ let
 
   hostSecrets = config.fudo.secrets.host-secrets."${config.instance.hostname}";
 
-  frigateCfg = builtins.toJSON {
-    mqtt = {
-      enabled = true;
-      inherit (cfg.mqtt) host port user;
-      password = "{FRIGATE_MQTT_PASSWORD}";
-    };
-    logger.default = cfg.log-level;
-    ffmpeg.hwaccel_args = [ "preset-intel-vaapi" ];
-    cameras = mapAttrs' (_: camOpts:
-      nameValuePair camOpts.name {
-        ffmpeg.inputs = [
-          {
-            path = camOpts.streams.high;
-            roles = [ "record" ];
-          }
-          {
-            path = camOpts.streams.low;
-            roles = [ "detect" ];
-          }
-        ];
-      }) cfg.cameras;
-    detectors = cfg.detectors;
-    record = {
-      enabled = true;
-      retain = {
-        days = cfg.retention.default;
-        mode = "motion";
+  frigateCfg = let
+    content = builtins.toJSON {
+      mqtt = {
+        enabled = true;
+        inherit (cfg.mqtt) host port user;
+        password = "{FRIGATE_MQTT_PASSWORD}";
       };
-      events.retain = {
-        default = cfg.retention.events;
-        mode = "active_objects";
-        objects = cfg.retention.objects;
+      logger.default = cfg.log-level;
+      ffmpeg.hwaccel_args = [ "preset-intel-vaapi" ];
+      cameras = mapAttrs' (_: camOpts:
+        nameValuePair camOpts.name {
+          ffmpeg.inputs = [
+            {
+              path = camOpts.streams.high;
+              roles = [ "record" ];
+            }
+            {
+              path = camOpts.streams.low;
+              roles = [ "detect" ];
+            }
+          ];
+        }) cfg.cameras;
+      detectors = cfg.detectors;
+      record = {
+        enabled = true;
+        retain = {
+          days = cfg.retention.default;
+          mode = "motion";
+        };
+        events.retain = {
+          default = cfg.retention.events;
+          mode = "active_objects";
+          objects = cfg.retention.objects;
+        };
       };
     };
-  };
+  in pkgs.writeText "frigate.yaml" content;
 
 in {
   options.services.frigateContainer = with types; {
