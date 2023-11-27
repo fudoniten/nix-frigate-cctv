@@ -12,6 +12,8 @@ let
 
   hostSecrets = config.fudo.secrets.host-secrets."${config.instance.hostname}";
 
+  removeNewline = removeSuffix "\n";
+
   frigateCfg = let
     content = builtins.toJSON {
       mqtt = {
@@ -188,8 +190,8 @@ in {
     fudo.secrets.host-secrets."${config.instance.hostname}" = {
       frigateEnv = {
         source-file = let
-          camPasswd = readFile cfg.camera-password-file;
-          mqttPasswd = readFile cfg.mqtt.password-file;
+          camPasswd = removeNewline (readFile cfg.camera-password-file);
+          mqttPasswd = removeNewline (readFile cfg.mqtt.password-file);
         in makeEnvFile {
           FRIGATE_RTSP_PASSWORD = camPasswd;
           FRIGATE_MQTT_PASSWORD = mqttPasswd;
