@@ -210,10 +210,10 @@ in {
             ];
             devices = cfg.devices;
             ports = [
-              "${cfg.ports.frigate}:5000"
-              "${cfg.ports.rtsp}:8554"
-              "${cfg.ports.webrtc}:8555/tcp"
-              "${cfg.ports.webrtc}:8555/udp"
+              "${toString cfg.ports.frigate}:5000"
+              "${toString cfg.ports.rtsp}:8554"
+              "${toString cfg.ports.webrtc}:8555/tcp"
+              "${toString cfg.ports.webrtc}:8555/udp"
             ];
             env_file = [ hostSecrets.frigateEnv.target-file ];
           };
