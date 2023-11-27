@@ -12,7 +12,7 @@ let
 
   hostSecrets = config.fudo.secrets.host-secrets."${config.instance.hostname}";
 
-  frigateCfg = toJSON {
+  frigateCfg = builtins.toJSON {
     mqtt = {
       enabled = true;
       inherit (cfg.mqtt) host port user;
