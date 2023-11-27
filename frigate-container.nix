@@ -190,7 +190,7 @@ in {
       };
     };
 
-    virtualisation.arion.projects.mastodon.settings = {
+    virtualisation.arion.projects.frigate.settings = {
       image = { pkgs, ... }: {
         project.name = "frigate-cctv";
         services = {
