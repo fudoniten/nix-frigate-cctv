@@ -215,7 +215,7 @@ in {
               "${cfg.ports.webrtc}:8555/tcp"
               "${cfg.ports.webrtc}:8555/udp"
             ];
-            env_file = hostSecrets.frigateEnv.target-file;
+            env_file = [ hostSecrets.frigateEnv.target-file ];
           };
         };
       };
