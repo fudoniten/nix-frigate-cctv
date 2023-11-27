@@ -190,7 +190,7 @@ in {
       };
     };
 
-    virtualisation.arion.projects.frigate.settings = {
+    virtualisation.arion.projects.frigate.settings = let
       image = { pkgs, ... }: {
         project.name = "frigate-cctv";
         services = {
@@ -213,6 +213,6 @@ in {
           };
         };
       };
-    };
+    in { imports = [ image ]; };
   };
 }
