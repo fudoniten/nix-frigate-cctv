@@ -33,6 +33,7 @@ let
           }
         ];
       }) cfg.cameras;
+    detectors = cfg.detectors;
     record = {
       enabled = true;
       retain = {
@@ -123,6 +124,11 @@ in {
       type = str;
       description =
         "Path on build host to file containing the camera password.";
+    };
+
+    detectors = mkOption {
+      type = attrsOf (attrsOf any);
+      default = { };
     };
 
     cameras = let
