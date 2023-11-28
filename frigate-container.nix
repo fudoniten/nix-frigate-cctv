@@ -191,11 +191,11 @@ in {
       };
     };
 
-    shm-size = mkOption {
-      type = str;
-      description = "Size of shared memory.";
-      default = "512mb";
-    };
+    # shm-size = mkOption {
+    #   type = str;
+    #   description = "Size of shared memory.";
+    #   default = "512mb";
+    # };
   };
 
   config = mkIf cfg.enable {
@@ -224,7 +224,7 @@ in {
               "${frigateCfg}:/config/config.yml"
               "${cfg.state-directory}:/media/frigate"
             ];
-            shm_size = cfg.shm-size;
+            # shm_size = cfg.shm-size;
             devices = cfg.devices;
             ports = [
               "${toString cfg.ports.frigate}:5000"
