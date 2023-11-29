@@ -14,6 +14,8 @@ let
 
   removeNewline = removeSuffix "\n";
 
+  flatMapAttrs' = f: attrs: listToAttrs (mapConcat f attrs);
+
   frigateCfg = let
     content = builtins.toJSON {
       mqtt = {
@@ -36,6 +38,9 @@ let
             }
           ];
         }) cfg.cameras;
+      go2rtc.streams =
+        mapAttrs' (_: camOpts: nameValuePair camOpts.name [ camOpts.low ])
+        cfg.cameras;
       detectors = cfg.detectors;
       record = {
         enabled = true;
