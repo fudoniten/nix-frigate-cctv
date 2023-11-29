@@ -38,8 +38,8 @@ let
             }
           ];
         }) cfg.cameras;
-      go2rtc.streams =
-        mapAttrs' (_: camOpts: nameValuePair camOpts.name [ camOpts.low ])
+      go2rtc.streams = mapAttrs'
+        (_: camOpts: nameValuePair camOpts.name [ camOpts.streams.low ])
         cfg.cameras;
       detectors = cfg.detectors;
       record = {
