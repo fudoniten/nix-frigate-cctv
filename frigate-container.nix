@@ -27,6 +27,7 @@ let
       ffmpeg.hwaccel_args = optional (cfg.hwaccel != null) cfg.hwaccel;
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
+          birdseye.mode = "objects";
           ffmpeg.inputs = [
             {
               path = camOpts.streams.high;
@@ -53,6 +54,10 @@ let
           mode = "active_objects";
           objects = cfg.retention.objects;
         };
+      };
+      birdseye = {
+        enabled = true;
+        mode = "continuous";
       };
     };
   in pkgs.writeText "frigate.yaml" content;
