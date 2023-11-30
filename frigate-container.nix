@@ -27,7 +27,7 @@ let
       ffmpeg.hwaccel_args = optional (cfg.hwaccel != null) cfg.hwaccel;
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
-          birdseye.mode = "objects";
+          birdseye.mode = if camOpts.default then "continuous" else "objects";
           ffmpeg.inputs = [
             {
               path = camOpts.streams.high;
@@ -159,6 +159,8 @@ in {
             description = "Camera name.";
             default = name;
           };
+
+          default = mkEnableOption "Make camera the primary birds-eye view.";
 
           streams = {
             low = mkOption {
