@@ -202,12 +202,6 @@ in {
           "File containing password with which to authenticate to MQTT server.";
       };
     };
-
-    # shm-size = mkOption {
-    #   type = str;
-    #   description = "Size of shared memory.";
-    #   default = "512mb";
-    # };
   };
 
   config = mkIf cfg.enable {
@@ -246,6 +240,7 @@ in {
             ];
             env_file = [ hostSecrets.frigateEnv.target-file ];
           };
+          # TODO: add metrics exporter
         };
       };
     in { imports = [ image ]; };
