@@ -49,9 +49,14 @@ let
           days = cfg.retention.default;
           mode = "motion";
         };
-        events.retain = {
+        detections.retain = {
           default = cfg.retention.events;
-          mode = "active_objects";
+          mode = "motion";
+          objects = cfg.retention.objects;
+        };
+        alerts.retain = {
+          default = cfg.retention.events;
+          mode = "motion";
           objects = cfg.retention.objects;
         };
       };
