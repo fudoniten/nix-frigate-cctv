@@ -42,22 +42,22 @@ let
       go2rtc.streams = mapAttrs'
         (_: camOpts: nameValuePair camOpts.name [ camOpts.streams.low ])
         cfg.cameras;
-      detectors = cfg.detectors;
+      inherit (cfg) detectors;
       record = {
         enabled = true;
         retain = {
           days = cfg.retention.default;
-          mode = "motion";
+          mode = "active_objects";
         };
         detections.retain = {
           default = cfg.retention.events;
-          mode = "motion";
-          objects = cfg.retention.objects;
+          mode = "active_objects";
+          days = cfg.retention.detections;
         };
         alerts.retain = {
           default = cfg.retention.events;
           mode = "motion";
-          objects = cfg.retention.objects;
+          days = cfg.retention.alerts;
         };
       };
       birdseye = {
@@ -99,23 +99,19 @@ in {
       default = mkOption {
         type = int;
         description = "Retention time for all motion, in days.";
-        default = 7;
+        default = 1;
       };
 
       events = mkOption {
         type = int;
         description = "Retention time for all detected objects, in days.";
-        default = 14;
+        default = 7;
       };
 
-      objects = mkOption {
-        type = attrsOf int;
-        description = "Map of object type to retention time in days.";
-        default = {
-          person = 60;
-          dog = 30;
-          cat = 30;
-        };
+      alerts = mkOption {
+        type = int;
+        description = "Retention time for all detected objects, in days.";
+        default = 7;
       };
     };
 
@@ -236,7 +232,7 @@ in {
               "${cfg.state-directory}:/media/frigate"
             ];
             # shm_size = cfg.shm-size;
-            devices = cfg.devices;
+            inherit (cfg) devices;
             ports = [
               "${toString cfg.ports.frigate}:5000"
               "${toString cfg.ports.rtsp}:8554"
