@@ -102,7 +102,7 @@ in {
         default = 1;
       };
 
-      events = mkOption {
+      detections = mkOption {
         type = int;
         description = "Retention time for all detected objects, in days.";
         default = 7;
