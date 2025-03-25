@@ -50,12 +50,10 @@ let
           mode = "active_objects";
         };
         detections.retain = {
-          default = cfg.retention.events;
           mode = "active_objects";
           days = cfg.retention.detections;
         };
         alerts.retain = {
-          default = cfg.retention.events;
           mode = "motion";
           days = cfg.retention.alerts;
         };
