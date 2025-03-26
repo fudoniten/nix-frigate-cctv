@@ -39,8 +39,8 @@ let
             }
           ];
         }) cfg.cameras;
-      go2rtc.streams = mapAttrs'
-        (_: camOpts: nameValuePair camOpts.name [ camOpts.streams.low ])
+      go2rtc.streams = mapAttrs' (_: camOpts:
+        nameValuePair camOpts.name [ ''"${camOpts.streams.low}"'' ])
         cfg.cameras;
       inherit (cfg) detectors;
       record = {
