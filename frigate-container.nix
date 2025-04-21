@@ -47,10 +47,10 @@ let
         enabled = true;
         retain = {
           days = cfg.retention.default;
-          mode = "active_objects";
+          mode = "motion";
         };
         detections.retain = {
-          mode = "active_objects";
+          mode = "motion";
           days = cfg.retention.detections;
         };
         alerts.retain = {
