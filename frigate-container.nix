@@ -219,9 +219,6 @@ in {
             image = cfg.images.frigate;
             hostname = "frigate";
             restart = "always";
-            shm_size =
-              let memsize = toString (512 * (length (attrNames cfg.cameras)));
-              in "${memsize}m";
             volumes = [
               "${frigateCfg}:/config/config.yml"
               "${cfg.state-directory}:/media/frigate"
@@ -237,6 +234,12 @@ in {
             env_file = [ hostSecrets.frigateEnv.target-file ];
           };
           # TODO: add metrics exporter
+        };
+
+        docker-compose.raw.services.frigate = {
+          shm_size =
+            let memsize = toString (512 * (length (attrNames cfg.cameras)));
+            in "${memsize}m";
         };
       };
     in { imports = [ image ]; };
