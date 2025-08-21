@@ -28,19 +28,13 @@ let
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
           birdseye.mode = if camOpts.default then "continuous" else "objects";
-          ffmpeg.inputs = [
-            {
-              path = camOpts.streams.high;
-              roles = [ "record" ];
-            }
-            {
-              path = camOpts.streams.low;
-              roles = [ "detect" ];
-            }
-          ];
+          ffmpeg.inputs = [{
+            path = camOpts.streams.high;
+            roles = [ "record" "detect" ];
+          }];
         }) cfg.cameras;
       go2rtc.streams = mapAttrs'
-        (_: camOpts: nameValuePair camOpts.name [ camOpts.streams.low ])
+        (_: camOpts: nameValuePair camOpts.name [ camOpts.streams.high ])
         cfg.cameras;
       inherit (cfg) detectors;
       record = {
@@ -90,7 +84,7 @@ in {
     hwaccel = mkOption {
       type = nullOr str;
       description = "Hardware acceleration driver.";
-      default = null;
+      default = [ "auto" ];
     };
 
     retention = {
@@ -225,6 +219,9 @@ in {
             image = cfg.images.frigate;
             hostname = "frigate";
             restart = "always";
+            shm_size =
+              let memsize = toString (512 * (length (attrNames cfg.cameras)));
+              in "${memsize}m";
             volumes = [
               "${frigateCfg}:/config/config.yml"
               "${cfg.state-directory}:/media/frigate"
