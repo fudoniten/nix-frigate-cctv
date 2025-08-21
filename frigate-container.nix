@@ -84,7 +84,7 @@ in {
     hwaccel = mkOption {
       type = nullOr str;
       description = "Hardware acceleration driver.";
-      default = [ "auto" ];
+      default = "auto";
     };
 
     retention = {
