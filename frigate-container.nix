@@ -14,7 +14,7 @@ let
 
   removeNewline = removeSuffix "\n";
 
-  formatYAML = pkgs.formats.yaml { };
+  formatYAML = generators.toYAML { };
 
   frigateCfg = let
     content = formatYAML {
