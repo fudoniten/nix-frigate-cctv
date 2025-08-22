@@ -24,7 +24,7 @@ let
         password = "{FRIGATE_MQTT_PASSWORD}";
       };
       logger.default = cfg.log-level;
-      ffmpeg.hwaccel_args = mkIf (cfg.hwaccel != null) cfg.hwaccel;
+      ffmpeg.hwaccel_args = cfg.hwaccel;
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
           birdseye.mode = if camOpts.default then "continuous" else "objects";
