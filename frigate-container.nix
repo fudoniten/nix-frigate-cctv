@@ -215,32 +215,33 @@ in {
       image = { pkgs, ... }: {
         project.name = "frigate-cctv";
         services = {
-          frigate.service = {
-            image = cfg.images.frigate;
-            hostname = "frigate";
-            restart = "always";
-            volumes = [
-              "${frigateCfg}:/config/config.yml"
-              "${cfg.state-directory}:/media/frigate"
-            ];
-            # shm_size = cfg.shm-size;
-            inherit (cfg) devices;
-            ports = [
-              "${toString cfg.ports.frigate}:5000"
-              "${toString cfg.ports.rtsp}:8554"
-              "${toString cfg.ports.webrtc}:8555/tcp"
-              "${toString cfg.ports.webrtc}:8555/udp"
-            ];
-            env_file = [ hostSecrets.frigateEnv.target-file ];
+          frigate = {
+            service = {
+              image = cfg.images.frigate;
+              hostname = "frigate";
+              restart = "always";
+              volumes = [
+                "${frigateCfg}:/config/config.yml"
+                "${cfg.state-directory}:/media/frigate"
+              ];
+              # shm_size = cfg.shm-size;
+              inherit (cfg) devices;
+              ports = [
+                "${toString cfg.ports.frigate}:5000"
+                "${toString cfg.ports.rtsp}:8554"
+                "${toString cfg.ports.webrtc}:8555/tcp"
+                "${toString cfg.ports.webrtc}:8555/udp"
+              ];
+              env_file = [ hostSecrets.frigateEnv.target-file ];
+            };
+            # TODO: add metrics exporter
+            out.service = {
+              shm_size = let
+                memsize =
+                  toString (512 * (length (attrNames (cfg.cameras or { }))));
+              in "${memsize}m";
+            };
           };
-          # TODO: add metrics exporter
-        };
-
-        frigate.out.service = {
-          shm_size = let
-            memsize =
-              toString (512 * (length (attrNames (cfg.cameras or { }))));
-          in "${memsize}m";
         };
       };
     in { imports = [ image ]; };
