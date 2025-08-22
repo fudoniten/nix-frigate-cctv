@@ -14,10 +14,10 @@ let
 
   removeNewline = removeSuffix "\n";
 
-  flatMapAttrs' = f: attrs: listToAttrs (mapConcat f attrs);
+  formatYAML = pkgs.formats.yaml { };
 
   frigateCfg = let
-    content = builtins.toJSON {
+    content = formatYAML {
       mqtt = {
         enabled = true;
         inherit (cfg.mqtt) host port user;
