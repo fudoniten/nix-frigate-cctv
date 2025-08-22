@@ -24,12 +24,12 @@ let
         password = "{FRIGATE_MQTT_PASSWORD}";
       };
       logger.default = cfg.log-level;
-      ffmpeg.hwaccel_args = optional (cfg.hwaccel != null) cfg.hwaccel;
+      ffmpeg.hwaccel_args = mkIf (cfg.hwaccel != null) cfg.hwaccel;
       cameras = mapAttrs' (_: camOpts:
         nameValuePair camOpts.name {
           birdseye.mode = if camOpts.default then "continuous" else "objects";
           ffmpeg.inputs = [{
-            path = camOpts.streams.high;
+            path = "rtsp://127.0.0.1:8554/${camOpts.name}"
             roles = [ "record" "detect" ];
           }];
         }) cfg.cameras;
@@ -236,10 +236,11 @@ in {
           # TODO: add metrics exporter
         };
 
-        docker-compose.raw.services.frigate = {
-          shm_size =
-            let memsize = toString (512 * (length (attrNames cfg.cameras)));
-            in "${memsize}m";
+        frigate.out.service = {
+          shm_size = let
+            memsize =
+              toString (512 * (length (attrNames (cfg.cameras or { }))));
+          in "${memsize}m";
         };
       };
     in { imports = [ image ]; };
