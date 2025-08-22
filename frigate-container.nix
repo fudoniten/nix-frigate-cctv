@@ -29,7 +29,7 @@ let
         nameValuePair camOpts.name {
           birdseye.mode = if camOpts.default then "continuous" else "objects";
           ffmpeg.inputs = [{
-            path = "rtsp://127.0.0.1:8554/${camOpts.name}"
+            path = "rtsp://127.0.0.1:8554/${camOpts.name}";
             roles = [ "record" "detect" ];
           }];
         }) cfg.cameras;
