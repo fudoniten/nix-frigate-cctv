@@ -16,7 +16,7 @@ let
 
   formatYAML = content:
     let
-      text = toJSON content;
+      text = builtins.toJSON content;
       file = pkgs.writeText "preformatted.yaml" text;
     in builtins.readFile (pkgs.runCommandNoCC "formatted-yaml" { } ''
       ${pkgs.yq}/bin/yq e '.' "${file}" > "$out"
