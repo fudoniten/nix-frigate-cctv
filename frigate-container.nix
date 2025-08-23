@@ -19,7 +19,7 @@ let
       text = builtins.toJSON content;
       file = pkgs.writeText "preformatted.yaml" text;
     in builtins.readFile (pkgs.runCommandNoCC "formatted-yaml" { } ''
-      ${pkgs.yq}/bin/yq -e '.' "${file}" > "$out"
+      ${pkgs.yq}/bin/yq -e -P '.' "${file}" > "$out"
     '');
 
   frigateCfg = let
