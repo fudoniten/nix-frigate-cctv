@@ -14,7 +14,11 @@ let
 
   removeNewline = removeSuffix "\n";
 
-  formatYAML = generators.toYAML { };
+  formatYAML = text:
+    let file = pkgs.writeText "preformatted.yaml" text;
+    in builtins.readFile (pkgs.runCommandNoCC "formatted-yaml" { } ''
+      ${pkgs.yq}/bin/yq e '.' "${file}" > "$out"
+    '');
 
   frigateCfg = let
     content = formatYAML {
