@@ -14,8 +14,10 @@ let
 
   removeNewline = removeSuffix "\n";
 
-  formatYAML = text:
-    let file = pkgs.writeText "preformatted.yaml" text;
+  formatYAML = content:
+    let
+      text = toYAML content;
+      file = pkgs.writeText "preformatted.yaml" text;
     in builtins.readFile (pkgs.runCommandNoCC "formatted-yaml" { } ''
       ${pkgs.yq}/bin/yq e '.' "${file}" > "$out"
     '');
