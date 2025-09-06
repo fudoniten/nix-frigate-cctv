@@ -63,7 +63,7 @@ let
         mode = "continuous";
       };
     };
-  in pkgs.writeText "frigate.yaml" (trace content content);
+  in pkgs.writeText "frigate.yaml" content;
 
 in {
   options.services.frigateContainer = with types; {
