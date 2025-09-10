@@ -62,6 +62,21 @@ let
         enabled = true;
         mode = "continuous";
       };
+      objects.track = [ "person" "cat" "dog" ];
+      filters = {
+        person = {
+          min_score = 0.65;
+          threshold = 0.7;
+        };
+        cat = {
+          min_score = 0.65;
+          threshold = 0.7;
+        };
+        dog = {
+          min_score = 0.65;
+          threshold = 0.7;
+        };
+      };
     };
   in pkgs.writeText "frigate.yaml" content;
 
